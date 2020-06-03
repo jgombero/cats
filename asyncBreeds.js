@@ -3,16 +3,17 @@ const fs = require('fs');
 const breedDetailsFromFile = function(breed, functionToRunWhenThingsAreDone) {
   console.log('breedDetailsFromFile: Calling readFile...');
   fs.readFile(`./data/${breed}.txt`, 'utf8', (error, data) => {
-    // CHANGE: Pass data into callback instead of returning it directly
+    
+    if (error) functionToRunWhenThingsAreDone(undefined);
+
     console.log("In readFile's Callback: it has the data.");
     if (!error) functionToRunWhenThingsAreDone(data);
   });
 };
 
-// CHANGE 1: Moved the console.log into a new function:
+// Callback function
 const printOutCatBreed = breedInfo => {
-  console.log('Return Value: ', breedInfo) // => print out details correctly.
+  console.log('Return Value: ', breedInfo)
 };
 
-// CHANGE 2: we're now passing two arguments into breedDetailsFromFile: breed string and a callback function
-breedDetailsFromFile('Bombay', printOutCatBreed);
+module.exports = breedDetailsFromFile;
